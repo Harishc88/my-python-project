@@ -1,0 +1,42 @@
+def prime_factors(n):
+    factors = set()
+    # Check for number of 2s that divide n
+    while n % 2 == 0:
+        factors.add(2)
+        n //= 2
+    
+    # n must be odd at this point so a skip of 2 (i.e., i = i + 2) can be used
+    for i in range(3, int(n**0.5) + 1, 2):
+        while n % i == 0:
+            factors.add(i)
+            n //= i
+    
+    # This condition is to check if n is a prime number greater than 2
+    if n > 2:
+        factors.add(n)
+    
+    return list(factors)
+
+def calculate_sum(arr, num):
+    if not arr:  # Check if the array is empty
+        return -1
+
+    factors = prime_factors(num)  # Get prime factors of num
+    total_sum = 0
+    found_valid_index = False
+
+    for factor in factors:
+        if factor < len(arr):  # Check if factor can be used as an index
+            total_sum += arr[factor]
+            found_valid_index = True
+    
+    return total_sum if found_valid_index else 0  # Return sum or 0 if no valid index found
+
+# Reading input
+n = int(input())  # Length of the array
+arr = list(map(int, input().split()))  # The array elements
+num = int(input())  # The number to factor
+
+# Calculate and print the result
+result = calculate_sum(arr, num)
+print(result)
